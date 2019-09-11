@@ -53,7 +53,7 @@ success=false
 
 #First Try
 while [ $time -lt 20 ]; do
-  PlayerMemory=$(awk "/${D}/,/min. update/" /proc/${ServerPid}/fd/3 | grep 'players in memory')
+  PlayerMemory=$(awk "/${D}/,/min. update/" ${SCRIPTPATH}/avorion.log | grep 'players in memory')
   if [ "${PlayerMemory}" ]; then
     success=true
     break;
@@ -74,7 +74,7 @@ if [ "${success}" = false ]; then
   $Tmux_SendKeys /status C-m
   time=0
   while [ $time -lt 20 ]; do
-    SaveStatus=$(cat /proc/${ServerPid}/fd/3 | awk "/${D}/,/Triggered saving of all server data/" | grep 'Triggered saving of all server data')
+    SaveStatus=$(cat ${SCRIPTPATH}/avorion.log | awk "/${D}/,/Triggered saving of all server data/" | grep 'Triggered saving of all server data')
     if [ "${SaveStatus}" ]; then
       success=true
       break;
@@ -95,7 +95,7 @@ if [ "${success}" = false ]; then
   $Tmux_SendKeys /save C-m
   time=0
   while [ $time -lt 45 ]; do
-    SaveStatus=$(cat /proc/${ServerPid}/fd/3 | awk "/${D}/,/Triggered saving of all server data/" | grep 'Triggered saving of all server data')
+    SaveStatus=$(cat ${SCRIPTPATH}/avorion.log | awk "/${D}/,/Triggered saving of all server data/" | grep 'Triggered saving of all server data')
     if [ "${SaveStatus}" ]; then
       DynamicEcho "\r" "DONTLOG"
       DynamicEcho "${PURPLE}${SERVER}${NOCOLOR} Saved, Recieved server response."
@@ -123,16 +123,16 @@ else
 fi
 
 #Get and display players online info
-PlayerMemory=$(awk "/${D}/,/min. update/" /proc/${ServerPid}/fd/3 | grep 'players in memory' | sed -e 's/.*| //g')
-FactionsMemory=$(awk "/${D}/,/min. update/" /proc/${ServerPid}/fd/3 | grep 'factions in memory' | sed -e 's/.*| //g')
-SectorsMemory=$(awk "/${D}/,/min. update/" /proc/${ServerPid}/fd/3 | grep 'sectors in memory' | sed -e 's/.*| //g')
-ScriptsMemory=$(awk "/${D}/,/min. update/" /proc/${ServerPid}/fd/3 | grep 'Memory used by scripts' | sed -e 's/.*| //g')
-ServerLoad=$(awk "/${D}/,/min. update/" /proc/${ServerPid}/fd/3 | grep 'server load' | sed -e 's/ 0%/ 0.01%/g' -e 's/.*| //g')
-AvgUpdate=$(awk "/${D}/,/min. update/" /proc/${ServerPid}/fd/3 | grep 'avg. update' | sed -e 's/.*| //g')
-MaxUpdate=$(awk "/${D}/,/min. update/" /proc/${ServerPid}/fd/3 | grep 'max. update' | sed -e 's/.*| //g')
-MinUpdate=$(awk "/${D}/,/min. update/" /proc/${ServerPid}/fd/3 | grep 'min. update' | sed -e 's/.*| //g')
-PlayersCount=$(awk "/${D}/,/online players/" /proc/${ServerPid}/fd/3 | grep 'online players (' | sed -e 's/online players (//' -e 's/).*//' -e 's/.*| //g' | tr -d '[:blank:]')
-PlayersNames=$(awk "/${D}/,/online players/" /proc/${ServerPid}/fd/3 | grep 'online players ('| sed -e 's/.*://' | tr -d '[:blank:]')
+PlayerMemory=$(awk "/${D}/,/min. update/" ${SCRIPTPATH}/avorion.log | grep 'players in memory' | sed -e 's/.*| //g')
+FactionsMemory=$(awk "/${D}/,/min. update/" ${SCRIPTPATH}/avorion.log | grep 'factions in memory' | sed -e 's/.*| //g')
+SectorsMemory=$(awk "/${D}/,/min. update/" ${SCRIPTPATH}/avorion.log | grep 'sectors in memory' | sed -e 's/.*| //g')
+ScriptsMemory=$(awk "/${D}/,/min. update/" ${SCRIPTPATH}/avorion.log | grep 'Memory used by scripts' | sed -e 's/.*| //g')
+ServerLoad=$(awk "/${D}/,/min. update/" ${SCRIPTPATH}/avorion.log | grep 'server load' | sed -e 's/ 0%/ 0.01%/g' -e 's/.*| //g')
+AvgUpdate=$(awk "/${D}/,/min. update/" ${SCRIPTPATH}/avorion.log | grep 'avg. update' | sed -e 's/.*| //g')
+MaxUpdate=$(awk "/${D}/,/min. update/" ${SCRIPTPATH}/avorion.log | grep 'max. update' | sed -e 's/.*| //g')
+MinUpdate=$(awk "/${D}/,/min. update/" ${SCRIPTPATH}/avorion.log | grep 'min. update' | sed -e 's/.*| //g')
+PlayersCount=$(awk "/${D}/,/online players/" ${SCRIPTPATH}/avorion.log | grep 'online players (' | sed -e 's/online players (//' -e 's/).*//' -e 's/.*| //g' | tr -d '[:blank:]')
+PlayersNames=$(awk "/${D}/,/online players/" ${SCRIPTPATH}/avorion.log | grep 'online players ('| sed -e 's/.*://' | tr -d '[:blank:]')
 
 DynamicEcho "${PURPLE}${SERVER}${NOCOLOR} is running with pid ${YELLOW}$(pidof ${SERVER})${NOCOLOR}."
 DynamicEcho "${PURPLE}${SERVER}${NOCOLOR} is hosting galaxy: ${GALAXY}"
@@ -158,4 +158,4 @@ find ${SCRIPTPATH}/avorion-manager/logs/*_playerchat.log -mtime +${LOG_ROTATION}
 #Generate data for the browser
 LoadFile "generate_banner.sh"
 
-cat /proc/${ServerPid}/fd/3 > ${SCRIPTPATH}/server.log
+cat ${SCRIPTPATH}/avorion.log > ${SCRIPTPATH}/server.log
