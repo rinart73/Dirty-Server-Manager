@@ -44,7 +44,7 @@ $Tmux_SendKeys /save C-m
 time=0
 
 while [ $time -lt $SaveWait ]; do
-  Save_Status=$(cat ${SCRIPTPATH}/avorion.log | awk "/${D}/,/Triggered saving of all server data/" | grep 'Triggered saving of all server data')
+  Save_Status=$(cat ${SCRIPTPATH}/server.log | awk "/${D}/,/Triggered saving of all server data/" | grep 'Triggered saving of all server data')
   if [ "${Save_Status}" ]; then
     DynamicEcho "\r" "DONTLOG"
     DynamicEcho "${PURPLE}${SERVER}${NOCOLOR} Has been saved."
@@ -62,7 +62,7 @@ DynamicEcho "${PURPLE}${SERVER}${NOCOLOR} Attempting to Stop...(Can take up to 3
 $Tmux_SendKeys /stop C-m
 time=0
 while [ $time -lt $StopWait ]; do
-  Shutdown_Status=$(cat ${SCRIPTPATH}/avorion.log | awk "/${D}/,/Server shutdown successful/" | grep 'Server shutdown successful')
+  Shutdown_Status=$(cat ${SCRIPTPATH}/server.log | awk "/${D}/,/Server shutdown successful/" | grep 'Server shutdown successful')
   if [ "${Shutdown_Status}" ] || [ "$( ps ax | grep ${SERVER} | grep -v grep | grep tmux | wc -l)" ]; then
     DynamicEcho "\r" "DONTLOG"
     DynamicEcho "${PURPLE}${SERVER}${NOCOLOR} has been stopped."

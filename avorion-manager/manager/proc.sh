@@ -25,7 +25,8 @@ fi
 ServerPid=$(pidof ${SERVER})
 
 if [ "$ServerPid" ]; then
-  cat ${SCRIPTPATH}/avorion.log > ${SCRIPTPATH}/server.log
+  # Already being stored
+  #cat ${SCRIPTPATH}/server.log > ${SCRIPTPATH}/server.log
   sleep 30
-  cat ${SCRIPTPATH}/avorion.log > ${SCRIPTPATH}/server.log
+  #cat ${SCRIPTPATH}/server.log > ${SCRIPTPATH}/server.log
 fi

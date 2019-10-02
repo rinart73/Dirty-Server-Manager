@@ -48,7 +48,7 @@ cat ${SCRIPTPATH}'/console.log' | grep '^<.*>' | grep -v '^<Rusty>' >> ${SCRIPTP
 > ${SCRIPTPATH}'/console.log'
 > ${SCRIPTPATH}'/server.log'
 
-tmux new-session -d -s ${TMUX_SESSION} script -c "bin/${SERVER} --port ${PORT} --galaxy-name ${GALAXY} ${GalaxyDirectory} --max-players ${MAX_PLAYERS} ${PARAMS}" -f ${SCRIPTPATH}/avorion.log 2> ${SCRIPTPATH}/tmux-error.log
+tmux new-session -d -s ${TMUX_SESSION} script -c "bin/${SERVER} --port ${PORT} --galaxy-name ${GALAXY} ${GalaxyDirectory} --max-players ${MAX_PLAYERS} ${PARAMS}" -f ${SCRIPTPATH}/server.log 2> ${SCRIPTPATH}/tmux-error.log
 
 # Thanks https://github.com/GameServerManagers/LinuxGSM
 # tmux pipe-pane not supported in tmux versions < 1.6
